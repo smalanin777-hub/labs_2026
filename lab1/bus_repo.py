@@ -24,6 +24,29 @@ class BusRepository:
         }
         self._buses.append(bus)
 
+    def remove_at(self, index: int):
+        if 0 <= index < len(self._buses):
+            self._buses.pop(index)
+        else:
+            raise TransportException("Индекс автобуса вне диапазона.")
+
+    def edit_at(self, index: int, name=None, capacity=None, fare=None, route_number=None):
+        if not (0 <= index < len(self._buses)):
+            raise TransportException("Индекс автобуса вне диапазона.")
+        bus = self._buses[index]
+        if name is not None and name.strip():
+            bus["name"] = name.strip()
+        if capacity is not None:
+            if capacity <= 0:
+                raise TransportException("Вместимость должна быть больше нуля.")
+            bus["capacity"] = capacity
+        if fare is not None:
+            if fare < 0:
+                raise TransportException("Стоимость проезда не может быть отрицательной.")
+            bus["fare"] = float(fare)
+        if route_number is not None and route_number.strip():
+            bus["route_number"] = route_number.strip()
+
     def get_all(self) -> list:
         return self._buses
 

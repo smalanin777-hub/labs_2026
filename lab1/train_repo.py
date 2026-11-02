@@ -24,6 +24,31 @@ class TrainRepository:
         }
         self._trains.append(train)
 
+    def remove_at(self, index: int):
+        if 0 <= index < len(self._trains):
+            self._trains.pop(index)
+        else:
+            raise TransportException("Индекс поезда вне диапазона.")
+
+    def edit_at(self, index: int, name=None, capacity=None, fare=None, carriages_count=None):
+        if not (0 <= index < len(self._trains)):
+            raise TransportException("Индекс поезда вне диапазона.")
+        train = self._trains[index]
+        if name is not None and name.strip():
+            train["name"] = name.strip()
+        if capacity is not None:
+            if capacity <= 0:
+                raise TransportException("Вместимость должна быть больше нуля.")
+            train["capacity"] = capacity
+        if fare is not None:
+            if fare < 0:
+                raise TransportException("Стоимость проезда не может быть отрицательной.")
+            train["fare"] = float(fare)
+        if carriages_count is not None:
+            if carriages_count <= 0:
+                raise TransportException("Количество вагонов должно быть больше нуля.")
+            train["carriages_count"] = carriages_count
+
     def get_all(self) -> list:
         return self._trains
 

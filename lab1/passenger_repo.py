@@ -21,6 +21,25 @@ class PassengerRepository:
         }
         self._passengers.append(passenger)
 
+    def remove_at(self, index: int):
+        if 0 <= index < len(self._passengers):
+            self._passengers.pop(index)
+        else:
+            raise TransportException("Индекс пассажира вне диапазона.")
+
+    def edit_at(self, index: int, passport_id=None, full_name=None, age=None):
+        if not (0 <= index < len(self._passengers)):
+            raise TransportException("Индекс пассажира вне диапазона.")
+        passenger = self._passengers[index]
+        if passport_id is not None and passport_id.strip():
+            passenger["passport_id"] = passport_id.strip()
+        if full_name is not None and full_name.strip():
+            passenger["full_name"] = full_name.strip()
+        if age is not None:
+            if age < 0 or age > 150:
+                raise TransportException("Указан некорректный возраст пассажира.")
+            passenger["age"] = age
+
     def get_all(self) -> list:
         return self._passengers
 
